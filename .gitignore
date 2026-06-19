@@ -1,0 +1,7 @@
+target/
+.vscode/
+.idea/
+__pycache__/
+*.pyc
+tests/experiments/experiment*/sat/instances
+tests/experiments/experiment*/opt/instances
