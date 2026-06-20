@@ -5,6 +5,7 @@ import subprocess
 import csv
 import os
 import datetime
+from pathlib import Path
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 if len(sys.argv) < 2:
@@ -15,7 +16,7 @@ OUTPUT_DIR = f"../experiments/experiment{GLOBAL_SEED}"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-EXECUTABLE = os.path.join("..", "..", "target", "release", "pumpkin-solver.exe")
+EXECUTABLE = os.path.join("..", "pumpkin", "target", "release", "pumpkin-solver.exe")
 MAX_WORKERS = 10 # for parallel running of instances
 
 
@@ -103,9 +104,13 @@ def generate_instances():
 
 def ensure_binary_exists():
     print("Building with cargo...")
+
+    pumpkin_dir = Path(__file__).parent / "../pumpkin"
+
     subprocess.run(
         ["cargo", "build", "--release", "-p", "pumpkin-solver"],
-        check=True
+        check=True,
+        cwd=pumpkin_dir.resolve()
     )
 
 

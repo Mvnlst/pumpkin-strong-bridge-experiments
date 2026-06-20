@@ -78,7 +78,7 @@ def compile_fzn(model_file, dzn_file, folder: str, solver: str, manual_instance=
         print(result.stderr)
     elif manual_instance:
         correctString = folder.replace("\\", "/")
-        print(f"cargo run -p pumpkin-solver --features=debug-checks {correctString}" + "/instance.fzn -s")
+        print(f"cargo run -p pumpkin-solver {correctString}" + "/instance.fzn -s")
         print(f"cargo run -p pumpkin-solver --conflict-resolver=no-learning {correctString}" + "/instance.fzn -s")
 
     return fzn_file

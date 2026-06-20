@@ -2,7 +2,20 @@ import pandas as pd
 import sys
 import os
 
-OUTPUT_DIR = ""
+if len(sys.argv) < 5:
+    raise ValueError("Usage: python merged_data.py <sat_base> <sat_sb> <opt_base> <opt_sb>")
+
+sat_base = sys.argv[1]
+sat_sb   = sys.argv[2]
+
+opt_base = sys.argv[3]
+opt_sb   = sys.argv[4]
+
+
+
+
+OUTPUT_DIR = os.path.dirname(sat_base) + "/../merged_analysis"
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
 def remove_timeouts(df):
@@ -544,21 +557,8 @@ def generate_time_shift_table(sat_base_path, sat_sb_path,
 
 
 
-if len(sys.argv) < 5:
-    raise ValueError("Usage: python merged_data.py <sat_base> <sat_sb> <opt_base> <opt_sb>")
-
-sat_base = sys.argv[1]
-sat_sb   = sys.argv[2]
-
-opt_base = sys.argv[3]
-opt_sb   = sys.argv[4]
-
-
 sat_group = load_grouped(sat_base, sat_sb)
 opt_group = load_grouped(opt_base, opt_sb)
-
-OUTPUT_DIR = os.path.dirname(sat_base) + "/../merged_analysis"
-os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 generate_conflict_table(sat_group, opt_group, f"{OUTPUT_DIR}/conflicts_merged.txt")
 generate_prop_table(sat_group, opt_group, f"{OUTPUT_DIR}/propagations_merged.txt")
