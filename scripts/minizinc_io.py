@@ -14,8 +14,11 @@ def create_experiment_instance_folder(experiment_seed, instance_n, instance_k, i
     return folder
 
 
-def write_dzn(edges, dist, n, k, seed, folder):
+def write_dzn(edges, dist, n, k, seed, folder, name=None):
     filename = f"{folder}/instance.dzn"
+    if name is not None:
+        filename = f"{folder}/{name}.dzn"
+        
 
     with open(filename, "w") as f:
         # metadata

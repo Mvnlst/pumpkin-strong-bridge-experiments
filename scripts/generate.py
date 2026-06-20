@@ -38,6 +38,15 @@ def generate_and_save(n, k, seed=None, model_file="../models/circuit_model_minim
         fzn_file = compile_fzn(model_file, dzn_file, folder, solver)
 
         return folder, dzn_file, fzn_file
+    
+def generate_dzn_file(n, k, seed, folder, name):
+    # Generate graph
+    edges, dist, order = generate_instance(n, k, seed)
+
+    # Write instance
+    dzn_file = write_dzn(edges, dist, n, k, seed, folder, name)
+
+    return dzn_file
 
 # Logic for inputting parameters for test generation
 if __name__ == "__main__":

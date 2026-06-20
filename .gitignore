@@ -1,7 +1,7 @@
-target/
 .vscode/
 .idea/
 __pycache__/
 *.pyc
 experiments/experiment*/sat/instances
 experiments/experiment*/opt/instances
+validation_instances

@@ -1,11 +1,17 @@
 import subprocess
 import os
+import random
+from generate import generate_dzn_file
 
-MODEL_SB = "../models/circuit_model_satisfy.mzn"
-MODEL_REF = "../models/circuit_model_satisfy_decomposed.mzn"
+MODEL = "../models/circuit_model_satisfy.mzn"
 SOLVER_SB = "pumpkin-strong-bridge"
 SOLVER_REF = "gecode"
-INSTANCE_DIR = "instances_for_validation"
+N_VALUES = [10, 13, 15]
+K_VALUES = [2,3,4]
+INSTANCE_AMOUNT = 5
+OUTPUT_DIR = "../validation_instances"
+DZN_FILES = []
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
 def run_minizinc(model, solver, dzn_file):
@@ -50,8 +56,8 @@ def compare_outputs(out1, out2):
 def validate_instance(dzn_file):
     print(f"Checking {dzn_file}...")
 
-    sb_output = run_minizinc(MODEL_SB, SOLVER_SB, dzn_file)
-    ref_output = run_minizinc(MODEL_REF, SOLVER_REF, dzn_file)
+    sb_output = run_minizinc(MODEL, SOLVER_SB, dzn_file)
+    ref_output = run_minizinc(MODEL, SOLVER_REF, dzn_file)
 
     if sb_output is None or ref_output is None:
         return False
@@ -68,12 +74,46 @@ def validate_instance(dzn_file):
         print(f"SB solutions:  {len(sb_norm)}")
         print(f"REF solutions: {len(ref_norm)}")
         return False
+    
 
+def get_seeds_for_pair(n, k, amount):
+    pair_rng = random.Random()
+    return [pair_rng.randint(0, 10**9) for _ in range(amount)]
+
+def generate_instances():
+    for n in N_VALUES:
+        for k in K_VALUES:
+            print(f"generating {INSTANCE_AMOUNT} instances for n = {n} and k = {k}...")
+            seeds_for_pair = get_seeds_for_pair(n, k, INSTANCE_AMOUNT)
+
+            for seed in seeds_for_pair:
+                folder = OUTPUT_DIR
+                dzn_file_name = os.path.join(f"n{n}k{k}seed{seed}")
+
+                generate_dzn_file(n, k, seed, folder, dzn_file_name)
+                DZN_FILES.append(f"{dzn_file_name}.dzn")
+
+
+def delete_unlisted_files():
+    # Convert allowed_names to a set for faster lookup
+    allowed_set = set(DZN_FILES)
+
+    for filename in os.listdir(OUTPUT_DIR):
+        file_path = os.path.join(OUTPUT_DIR, filename)
+
+        # Only process files (skip directories)
+        if os.path.isfile(file_path):
+            if filename not in allowed_set:
+                os.remove(file_path)
 
 def main():
+    generate_instances()
+
+    delete_unlisted_files()
+
     files = [
-        os.path.join(INSTANCE_DIR, f)
-        for f in os.listdir(INSTANCE_DIR)
+        os.path.join(OUTPUT_DIR, f)
+        for f in os.listdir(OUTPUT_DIR)
         if f.endswith(".dzn")
     ]
 
