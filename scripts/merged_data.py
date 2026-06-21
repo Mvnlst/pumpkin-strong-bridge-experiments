@@ -185,8 +185,8 @@ def generate_sb_scc_table(sat_sb_path, opt_sb_path, output_file):
             if total > 0:
                 sb_ratio  = sat_row["sb propagations"] / total * 100
                 scc_ratio = sat_row["scc propagations"] / total * 100
-                sat_sb_ratio  = f"{sb_ratio:.1f}"
-                sat_scc_ratio = f"{scc_ratio:.1f}"
+                sat_sb_ratio  = f"{sb_ratio:.2f}"
+                sat_scc_ratio = f"{scc_ratio:.2f}"
             else:
                 sat_sb_ratio, sat_scc_ratio = "-", "-"
 
@@ -199,8 +199,8 @@ def generate_sb_scc_table(sat_sb_path, opt_sb_path, output_file):
             if total > 0:
                 sb_ratio  = opt_row["sb propagations"] / total * 100
                 scc_ratio = opt_row["scc propagations"] / total * 100
-                opt_sb_ratio  = f"{sb_ratio:.1f}"
-                opt_scc_ratio = f"{scc_ratio:.1f}"
+                opt_sb_ratio  = f"{sb_ratio:.2f}"
+                opt_scc_ratio = f"{scc_ratio:.2f}"
             else:
                 opt_sb_ratio, opt_scc_ratio = "-", "-"
 
