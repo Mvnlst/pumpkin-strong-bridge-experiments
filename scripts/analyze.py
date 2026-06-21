@@ -7,10 +7,6 @@ import sys
 
 # Usage:
 # python analyze.py results_base.csv results_sb.csv
-# or:
-# python analyze.py results_sb.csv
-# or:
-# python analyze.py results_base.csv
 
 if len(sys.argv) < 3:
     raise ValueError("Usage: python analyze.py <file1> <file2> <'sat' or 'opt'>")
@@ -68,8 +64,6 @@ def add_normalized_time_shares(df):
     return df
 
 
-
-# Preprocess
 def preprocess(df):
     grouped = df.groupby(["n", "k"]).mean().reset_index()
     grouped = grouped[grouped["k"] != 1]
