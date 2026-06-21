@@ -98,7 +98,7 @@ You can change the parameters for both `sat` (satisfaction) and `opt` (optimizat
 - `timeout`: per-instance time limit; should generally not exceed 30 minutes
 - `excluded_combinations`: combinations to skip; list of tuples which represent the (n,k) combinations to not use
 
-You can also change the `MAX_WORKERS` at the top to align with the capabilities of the processor in use; set it to 1 for sequential solving.
+You can also change the `MAX_WORKERS` at the top of the script to align with the capabilities of the processor in use; set it to 1 for sequential solving.
 ### Output
 
 Results are stored in in `experiments/experiment<seed>`. Running another experiment with the same seed will overwrite the existing results. Each experiment produces an optimization and satisfaction folder with:
@@ -128,7 +128,7 @@ What this does:
 - Generates test instances based on what is configured in the script
 - Runs:
   - Pumpkin (strong-bridges)
-  - Gecode (reference solver)
+  - Gecode (reference solver,  can be changed in script)
 - Compares **all solutions** and returns whether they matched or not
 
 In `validate_solutions.py`, you can define:
@@ -138,17 +138,17 @@ In `validate_solutions.py`, you can define:
 
 For validating, it is recommended to not go much higher than `k = 5` and `n = 15`, as the amount of possible solutions explodes with higher parameters.
 ## Reproducibility
-All experiments are deterministic given a seed:
+All experiments are deterministic given a seed, like defined earlier:
 
 ```bash
 python run_experiments.py <seed>
 ```
-The seed controls instance generation and ensures that satisfaction and optimization instances with the same (n,k) will have the same instances generated.
+The seed controls instance generation and ensures that satisfaction and optimization instances with the same (n,k) will have the same instances generated. Reported results in this thesis have been collected using seed: **420**
 
 ## Notes
 
 - This repository contains a **research extension** and is not part of the official Pumpkin project
-- Performance improvements depend on instance size and parameter choices. The goal of this project was to show the effect strong bridges can have in regards of **search effort**, not necessarily runtime.
+- Performance improvements depend on instance size and parameter choices. The goal of this project was to show the effect strong bridges can have in regards of **search effort** and **explanation quality**, improving runtime was not the main goal.
 - statistics collected when performing strong bridge propagation may introduce measuring overhead, resulting slower runtimes
 
 ## Summary
@@ -167,5 +167,3 @@ This extension has been developed for CSE3000 Research Project.
 - Thesis committee: Emir Demirović, Imko Marijnissen, Andreea Costea
 
 An electronic version of this thesis is available at https://repository.tudelft.nl/
-
-Reported results in the thesis have been collected using seed: **420**
